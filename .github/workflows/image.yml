@@ -4,21 +4,25 @@ jobs:
   hub:
     name: "Publish on Docker Hub"
     runs-on: ubuntu-18.04
+    strategy:
+      matrix:
+        registry: ["dockerhub", "gitlab"]
     steps:
       - uses: actions/checkout@v2
         with:
           repository: "theforeman/foreman"
           ref: "develop"
       - name: Install Docker 
-        # This is only necessary, because the pre-installer Docker version is a special variant 
-        # Which apparently has an old bug 
+        # This is only necessary, because the pre-installer Docker version
+        # seems to be a special Azure variant
+        # which apparently has an old bug 
         run: |
           sudo apt remove moby-engine moby-cli
           sudo apt install docker.io
           sudo dockerd
+          docker --version
       - name: build
         run: |
-          docker --version
           docker build . --tag foreman 
       # https://github.com/elgohr/Publish-Docker-Github-Action/releases/tag/2.13 
       - uses: elgohr/Publish-Docker-Github-Action@b82ad077c06f24a94fc90a2627e0e11d9f55a49f 
@@ -28,19 +32,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
           registry: https://registry.hub.docker.com
           tags: "latest"
-  gitlab:
-    name: "Publish on private GitLab"
-    runs-on: ubuntu-18.04
-    steps:
-      - uses: actions/checkout@v2
-        with:
-          repository: "theforeman/foreman"
-          ref: "develop"
-      - name: build
-        run: |
-          docker --version
-          docker build . --tag foreman 
-      # https://github.com/elgohr/Publish-Docker-Github-Action/releases/tag/2.13 
+        if: matrix.registry == 'dockerhub'
       - uses: elgohr/Publish-Docker-Github-Action@b82ad077c06f24a94fc90a2627e0e11d9f55a49f 
         with:
           name: ${{ secrets.GITLAB_DOCKER_NAME }}
@@ -48,3 +40,4 @@ jobs:
           password: ${{ secrets.GITLAB_ACCESS_TOKEN }}
           registry: ${{ secrets.GITLAB_DOCKER_REGISTRY }}
           tags: "latest"
+          if: matrix.registry == 'gitlab'
