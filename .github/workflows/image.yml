@@ -40,4 +40,4 @@ jobs:
           password: ${{ secrets.GITLAB_ACCESS_TOKEN }}
           registry: ${{ secrets.GITLAB_DOCKER_REGISTRY }}
           tags: "latest"
-          if: matrix.registry == 'gitlab'
+        if: matrix.registry == 'gitlab'
