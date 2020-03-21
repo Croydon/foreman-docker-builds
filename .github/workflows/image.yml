@@ -1,7 +1,8 @@
 on: [push, pull_request]
 
 jobs:
-  image:
+  hub:
+    name: "Publish on Docker Hub"
     runs-on: ubuntu-18.04
     steps:
       - uses: actions/checkout@v2
@@ -16,6 +17,15 @@ jobs:
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
           registry: https://registry.hub.docker.com
           tags: "latest"
+  gitlab:
+    name: "Publish on private GitLab"
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: "theforeman/foreman"
+          ref: "develop"
+      # https://github.com/elgohr/Publish-Docker-Github-Action/releases/tag/2.13 
       - uses: elgohr/Publish-Docker-Github-Action@b82ad077c06f24a94fc90a2627e0e11d9f55a49f 
         with:
           name: croydon/foreman
