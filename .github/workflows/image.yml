@@ -11,6 +11,7 @@ jobs:
           ref: "develop"
       - name: build
         run: |
+          docker --version
           docker build . --tag foreman 
       # https://github.com/elgohr/Publish-Docker-Github-Action/releases/tag/2.13 
       - uses: elgohr/Publish-Docker-Github-Action@b82ad077c06f24a94fc90a2627e0e11d9f55a49f 
@@ -34,7 +35,7 @@ jobs:
       # https://github.com/elgohr/Publish-Docker-Github-Action/releases/tag/2.13 
       - uses: elgohr/Publish-Docker-Github-Action@b82ad077c06f24a94fc90a2627e0e11d9f55a49f 
         with:
-          name: croydon/foreman
+          name: ${{ secrets.GITLAB_DOCKER_NAME }}
           username: ${{ secrets.GITLAB_USERNAME }}
           password: ${{ secrets.GITLAB_ACCESS_TOKEN }}
           registry: ${{ secrets.GITLAB_DOCKER_REGISTRY }}
