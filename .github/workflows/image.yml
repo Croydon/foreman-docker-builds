@@ -3,7 +3,7 @@ on: [push, pull_request]
 jobs:
   hub:
     name: "Publish on Docker Hub"
-    runs-on: ubuntu-18.04
+    runs-on: windows-2019
     steps:
       - uses: actions/checkout@v2
         with:
@@ -23,7 +23,7 @@ jobs:
           tags: "latest"
   gitlab:
     name: "Publish on private GitLab"
-    runs-on: ubuntu-18.04
+    runs-on: windows-2019
     steps:
       - uses: actions/checkout@v2
         with:
