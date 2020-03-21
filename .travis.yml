@@ -1,0 +1,11 @@
+language: ruby
+
+services:
+  - docker
+
+script:
+  - docker --version
+  - git clone --recurse-submodules https://github.com/theforeman/foreman foreman
+  - cd foreman 
+  - git checkout devlop
+  - docker build . --tag foreman 
