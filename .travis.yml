@@ -4,8 +4,9 @@ services:
   - docker
 
 script:
+  - set -e
   - docker --version
   - git clone --recurse-submodules https://github.com/theforeman/foreman foreman
   - cd foreman 
-  - git checkout devlop
+  - git checkout develop
   - docker build . --tag foreman 
