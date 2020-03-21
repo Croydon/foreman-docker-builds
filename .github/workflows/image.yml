@@ -19,6 +19,8 @@ jobs:
         run: |
           sudo apt remove moby-engine moby-cli
           sudo apt install docker.io
+          sudo systemctl unmask docker.service 
+          sudo systemctl unmask docker.socket 
           sudo systemctl start docker
           docker --version
       - name: build
