@@ -23,11 +23,9 @@ jobs:
           sudo systemctl unmask docker.socket 
           sudo systemctl start docker
           docker --version
-      - name: build
-        run: |
-          docker build . --tag foreman 
       # https://github.com/elgohr/Publish-Docker-Github-Action/releases/tag/2.13 
-      - uses: elgohr/Publish-Docker-Github-Action@b82ad077c06f24a94fc90a2627e0e11d9f55a49f 
+      - name: "Publish to Docker Hub"
+        uses: elgohr/Publish-Docker-Github-Action@b82ad077c06f24a94fc90a2627e0e11d9f55a49f 
         with:
           name: croydon/foreman
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -35,7 +33,8 @@ jobs:
           registry: https://registry.hub.docker.com
           tags: "latest"
         if: matrix.registry == 'Docker Hub'
-      - uses: elgohr/Publish-Docker-Github-Action@b82ad077c06f24a94fc90a2627e0e11d9f55a49f 
+      - name: "Publish to GitLab"
+        uses: elgohr/Publish-Docker-Github-Action@b82ad077c06f24a94fc90a2627e0e11d9f55a49f 
         with:
           name: ${{ secrets.GITLAB_DOCKER_NAME }}
           username: ${{ secrets.GITLAB_USERNAME }}
