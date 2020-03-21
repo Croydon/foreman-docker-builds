@@ -1,23 +1,24 @@
 on: [push, pull_request]
 
-runs-on: ubuntu-18.04
-
-steps:
-  - uses: actions/checkout@v2
-    with:
-      repository: "theforeman/foreman"
-  # https://github.com/elgohr/Publish-Docker-Github-Action/releases/tag/2.13 
-  - uses: elgohr/Publish-Docker-Github-Action@b82ad077c06f24a94fc90a2627e0e11d9f55a49f 
-    with:
-      name: croydon/foreman
-      username: ${{ secrets.DOCKERHUB_USERNAME }}
-      password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
-      registry: https://registry.hub.docker.com
-      tags: "latest"
-  - uses: elgohr/Publish-Docker-Github-Action@b82ad077c06f24a94fc90a2627e0e11d9f55a49f 
-    with:
-      name: croydon/foreman
-      username: ${{ secrets.GITLAB_USERNAME }}
-      password: ${{ secrets.GITLAB_ACCESS_TOKEN }}
-      registry: ${{ secrets.GITLAB_DOCKER_REGISTRY }}
-      tags: "latest"
+jobs:
+  image:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          repository: "theforeman/foreman"
+      # https://github.com/elgohr/Publish-Docker-Github-Action/releases/tag/2.13 
+      - uses: elgohr/Publish-Docker-Github-Action@b82ad077c06f24a94fc90a2627e0e11d9f55a49f 
+        with:
+          name: croydon/foreman
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
+          registry: https://registry.hub.docker.com
+          tags: "latest"
+      - uses: elgohr/Publish-Docker-Github-Action@b82ad077c06f24a94fc90a2627e0e11d9f55a49f 
+        with:
+          name: croydon/foreman
+          username: ${{ secrets.GITLAB_USERNAME }}
+          password: ${{ secrets.GITLAB_ACCESS_TOKEN }}
+          registry: ${{ secrets.GITLAB_DOCKER_REGISTRY }}
+          tags: "latest"
