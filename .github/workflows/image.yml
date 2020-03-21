@@ -2,11 +2,11 @@ on: [push, pull_request]
 
 jobs:
   hub:
-    name: "Publish on Docker Hub"
+    name: "Publish on ${{ matrix.registry }}"
     runs-on: ubuntu-18.04
     strategy:
       matrix:
-        registry: ["dockerhub", "gitlab"]
+        registry: ["Docker Hub", "GitLab"]
     steps:
       - uses: actions/checkout@v2
         with:
@@ -19,7 +19,7 @@ jobs:
         run: |
           sudo apt remove moby-engine moby-cli
           sudo apt install docker.io
-          sudo dockerd
+          sudo systemctl start docker
           docker --version
       - name: build
         run: |
@@ -32,7 +32,7 @@ jobs:
           password: ${{ secrets.DOCKERHUB_ACCESS_TOKEN }}
           registry: https://registry.hub.docker.com
           tags: "latest"
-        if: matrix.registry == 'dockerhub'
+        if: matrix.registry == 'Docker Hub'
       - uses: elgohr/Publish-Docker-Github-Action@b82ad077c06f24a94fc90a2627e0e11d9f55a49f 
         with:
           name: ${{ secrets.GITLAB_DOCKER_NAME }}
@@ -40,4 +40,4 @@ jobs:
           password: ${{ secrets.GITLAB_ACCESS_TOKEN }}
           registry: ${{ secrets.GITLAB_DOCKER_REGISTRY }}
           tags: "latest"
-        if: matrix.registry == 'gitlab'
+        if: matrix.registry == 'GitLab'
