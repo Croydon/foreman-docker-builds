@@ -9,6 +9,9 @@ jobs:
         with:
           repository: "theforeman/foreman"
           ref: "develop"
+      - name: build
+        run: |
+          docker build . --tag foreman 
       # https://github.com/elgohr/Publish-Docker-Github-Action/releases/tag/2.13 
       - uses: elgohr/Publish-Docker-Github-Action@b82ad077c06f24a94fc90a2627e0e11d9f55a49f 
         with:
@@ -25,6 +28,9 @@ jobs:
         with:
           repository: "theforeman/foreman"
           ref: "develop"
+      - name: build
+        run: |
+          docker build . --tag foreman 
       # https://github.com/elgohr/Publish-Docker-Github-Action/releases/tag/2.13 
       - uses: elgohr/Publish-Docker-Github-Action@b82ad077c06f24a94fc90a2627e0e11d9f55a49f 
         with:
