@@ -13,8 +13,9 @@ jobs:
         # This is only necessary, because the pre-installer Docker version is a special variant 
         # Which apparently has an old bug 
         run: |
-          apt remove moby-engine moby-cli
-          apt install docker.io
+          sudo apt remove moby-engine moby-cli
+          sudo apt install docker.io
+          sudo dockerd
       - name: build
         run: |
           docker --version
